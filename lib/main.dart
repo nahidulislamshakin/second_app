@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import './answers.dart';
+import './question.dart';
 
 void main() {
   runApp(MyApp());
@@ -7,51 +9,70 @@ void main() {
 class MyApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return MyAppState();
+    return _MyApp();
   }
 }
 
-class MyAppState extends State<MyApp> {
-  var question = [
-    "what is fav color?",
-    "what is your fav games?",
-    "whats your fav animal?"
+class _MyApp extends State<MyApp> {
+  int _answerindex = 0;
+  var questions = [
+    {
+      'questionText': 'What\'s is your favorite Animal?',
+      'answer': ['Goat', 'cow', 'Tiger', 'lion']
+    },
+    {
+      'questionText': 'What\'s is your favorite sports?',
+      'answer': ['Football', 'cricket', 'busketball', 'chess']
+    },
+    {
+      'questionText': 'What\'s is your favorite color?',
+      'answer': ['Red', 'Green', 'Blue', 'Yellow']
+    },
+    {
+      'questionText': 'What\'s is your favorite country?',
+      'answer': ['Bangladesh', 'India', 'pakisthan', 'united states']
+    },
+    {
+      'questionText': 'What\'s is your favorite frute?',
+      'answeer': ['Apple', 'Bananga', 'Orange', 'Mango']
+    },
+    {
+      'questionText': 'What\'s your favorite subject',
+      'answer': ['CSE', 'EEE', 'APE', 'CIVIL']
+    }
   ];
-  int ansindex = 0;
-  void ansIndex() {
+  void _answerQuestion() {
     setState(() {
-      ansindex++;
+      _answerindex = (_answerindex + 1) % 6;
     });
+    print(_answerindex);
+    if (_answerindex < questions.length) {
+      print('You have more questions');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return MaterialApp(
+      title: 'Questions Apps',
       home: Scaffold(
         appBar: AppBar(
-          title: Text("AppBar."),
+          title: Text('Questions Apps'),
+          centerTitle: true,
         ),
-        body: Column(
-          children: [
-            Text(question[ansindex]),
-            RaisedButton(
-              child: Text("Green"),
-              onPressed: () {
-                print("ans is green");
-              },
-            ),
-            RaisedButton(
-              child: Text("Blue"),
-              onPressed: () => print("Blue"),
-            ),
-            RaisedButton(
-              child: Text("Black"),
-              onPressed: () => print("Black"),
-            )
-          ],
-        ),
+        body: _answerindex < questions.length
+            ? Column(
+                children: [
+                  Questions(questions[_answerindex]['questionText'] as String),
+                  ...(questions[_answerindex]['answer'] as List<String>)
+                      .map((answer) {
+                    return Answer(_answerQuestion, answer);
+                  }).toList(),
+                ],
+              )
+            : Center(
+                child: Text('The Quiz is done'),
+              ),
       ),
     );
   }
