@@ -1,79 +1,63 @@
 import 'package:flutter/material.dart';
-import './answers.dart';
-import './question.dart';
+import 'package:second_app/question.dart';
+import 'package:second_app/answer.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(Quiz());
 }
 
-class MyApp extends StatefulWidget {
+class Quiz extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return _MyApp();
+  _Quizapp createState() {
+    return _Quizapp();
   }
 }
 
-class _MyApp extends State<MyApp> {
-  int _answerindex = 0;
-  var questions = [
+class _Quizapp extends State<Quiz> {
+  int idx = 0;
+  var questionlist = [
     {
-      'questionText': 'What\'s is your favorite Animal?',
-      'answer': ['Goat', 'cow', 'Tiger', 'lion']
+      'question': 'what is favorite color?',
+      'answer': ['red', 'green', 'blue'],
     },
     {
-      'questionText': 'What\'s is your favorite sports?',
-      'answer': ['Football', 'cricket', 'busketball', 'chess']
+      'question': 'what is favorite animal?',
+      'answer': ['dog', 'cat', 'lion'],
     },
     {
-      'questionText': 'What\'s is your favorite color?',
-      'answer': ['Red', 'Green', 'Blue', 'Yellow']
-    },
-    {
-      'questionText': 'What\'s is your favorite country?',
-      'answer': ['Bangladesh', 'India', 'pakisthan', 'united states']
-    },
-    {
-      'questionText': 'What\'s is your favorite frute?',
-      'answeer': ['Apple', 'Bananga', 'Orange', 'Mango']
-    },
-    {
-      'questionText': 'What\'s your favorite subject',
-      'answer': ['CSE', 'EEE', 'APE', 'CIVIL']
+      'question': 'who is favorite player?',
+      'answer': ['shakib', 'mashrafee', 'mushfiq'],
     }
   ];
-  void _answerQuestion() {
+  void changeQuestion() {
     setState(() {
-      _answerindex = (_answerindex + 1) % 6;
+      idx++;
     });
-    print(_answerindex);
-    if (_answerindex < questions.length) {
-      print('You have more questions');
-    }
   }
 
   @override
   Widget build(BuildContext context) {
+    // TODO: implement build
     return MaterialApp(
-      title: 'Questions Apps',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Questions Apps'),
-          centerTitle: true,
-        ),
-        body: _answerindex < questions.length
-            ? Column(
-                children: [
-                  Questions(questions[_answerindex]['questionText'] as String),
-                  ...(questions[_answerindex]['answer'] as List<String>)
-                      .map((answer) {
-                    return Answer(_answerQuestion, answer);
-                  }).toList(),
-                ],
-              )
-            : Center(
-                child: Text('The Quiz is done'),
-              ),
-      ),
-    );
+        title: "Quiz App",
+        home: Scaffold(
+          appBar: AppBar(
+            title: Text("Quiz App"),
+            centerTitle: true,
+          ),
+          body: idx < questionlist.length
+              ? Column(
+                  children: [
+                    Question(questionlist[idx]['question'] as String),
+                    ...(questionlist[idx]['answer'] as List<String>)
+                        .map((answerOption) {
+                      return Answer(answerOption, changeQuestion);
+                    }).toList()
+                  ],
+                )
+              : Center(
+                  child: Text("Quiz is done",
+                      style: TextStyle(fontSize: 20, color: Colors.black))),
+        ));
   }
 }
